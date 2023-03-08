@@ -140,7 +140,7 @@ func (p *Properties) validate(pfx string, fileName string) error {
 	if err != nil {
 		return err
 	}
-	err = checkIfStringNotInList(p.Type, []string{"number", "string", "object", "array"}, pfx, "type", fileName)
+	err = checkIfStringNotInList(p.Type, []string{"number", "string", "object", "array", "float"}, pfx, "type", fileName)
 	if err != nil {
 		return err
 	}
