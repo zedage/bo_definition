@@ -215,28 +215,36 @@ func ensureFieldsExist(fieldNames []string, def *Definition, fileName string, fi
 }
 
 func fieldsExistInDefinition(fieldNames []string, def *Definition, fieldPath []string, searchInTree bool) bool {
-	for _, fieldName := range fieldNames {
-		flag := false
-		for _, fDef := range def.Properties {
-			fDefName := fDef.FieldName
-			if len(fieldPath) > 0 {
-				fDefName = fmt.Sprintf("%s.%s", strings.Join(fieldPath[:], "."), fDef.FieldName)
-			}
-			if fieldName == fDefName {
-				flag = true
-				break
-			}
-			if searchInTree {
-				if fDef.Type == "array" || fDef.Type == "object" {
-					if fieldsExistInDefinition(fieldNames, &fDef.Item, append(fieldPath, fDef.FieldName), searchInTree) {
-						flag = true
-						break
+	for _, fieldNameTmp := range fieldNames {
+		fieldNameList := []string{fieldNameTmp}
+		if strings.HasPrefix(fieldNameTmp, "oneOf(") {
+			fieldNameTmp = strings.Replace(fieldNameTmp, "oneOf(", "", -1)
+			fieldNameTmp = strings.Replace(fieldNameTmp, ")", "", -1)
+			fieldNameList = strings.Split(fieldNameTmp, ",")
+		}
+		for _, fieldName := range fieldNameList {
+			flag := false
+			for _, fDef := range def.Properties {
+				fDefName := fDef.FieldName
+				if len(fieldPath) > 0 {
+					fDefName = fmt.Sprintf("%s.%s", strings.Join(fieldPath[:], "."), fDef.FieldName)
+				}
+				if fieldName == fDefName {
+					flag = true
+					break
+				}
+				if searchInTree {
+					if fDef.Type == "array" || fDef.Type == "object" {
+						if fieldsExistInDefinition(fieldNames, &fDef.Item, append(fieldPath, fDef.FieldName), searchInTree) {
+							flag = true
+							break
+						}
 					}
 				}
 			}
-		}
-		if !flag {
-			return false
+			if !flag {
+				return false
+			}
 		}
 	}
 	return true
