@@ -1,7 +1,5 @@
 package bo_definition
 
-import "fmt"
-
 type BoRoot struct {
 	BoModel BoModel `yaml:"boModel,omitempty" json:"boModel"`
 }
