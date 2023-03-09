@@ -49,25 +49,3 @@ type Getter struct {
 	MethodName string   `yaml:"methodName,omitempty" json:"methodName,omitempty"`
 	Interface  []string `yaml:"interface,omitempty" json:"interface,omitempty"`
 }
-
-func (p *Properties) GetGoType() string {
-	if p.Type == "string" {
-		if p.Format == "date" {
-			return "*commons.FcsDate"
-		}
-	} else if p.Type == "number" {
-		if p.Format == "int8" || p.Format == "int16" || p.Format == "int32" || p.Format == "int64" {
-			return p.Format
-		} else if p.Format == "float" {
-			return "float"
-		} else if p.Format == "double" {
-			return "double"
-		}
-		return "*commons.FcsTechLnr"
-	}
-	return "string"
-}
-
-func (p *Properties) GetBsonAnnotation() string {
-	return fmt.Sprintf("`bson:\"%s,omitempty\"`", p.FieldName)
-}
