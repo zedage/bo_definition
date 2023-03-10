@@ -1,6 +1,8 @@
 package bo_definition
 
 import (
+	"strings"
+	
 	"github.com/iancoleman/strcase"
 )
 
@@ -55,11 +57,11 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 			}
 			p.InternalStructType = "*commons.FcsTechLnr"
 		} else if p.Type == "object" {			
-			p.InternalStructType = "*" + strings.Join(path, "_") + "_" + name
-			p.Item.FillMissingValuesCascade(append(path, p.FieldName))
+			p.InternalStructType = "*" + strings.Join(path, "_") + "_" + p.FieldName
+			p.Item.fillMissingValuesCascade(append(path, p.FieldName))
 		} else if p.Type == "array" {
-			p.InternalStructType = "* []" + strings.Join(path, "_") + "_" + name
-			p.Item.FillMissingValuesCascade(append(path, p.FieldName))
+			p.InternalStructType = "* []" + strings.Join(path, "_") + "_" + p.FieldName
+			p.Item.fillMissingValuesCascade(append(path, p.FieldName))
 		}
 	}
 }
