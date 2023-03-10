@@ -43,6 +43,7 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 		d.Properties[i].InternalFieldNameUCC = strcase.ToCamel(strings.ToLower(p.FieldName))
 		d.Properties[i].InternalFieldNameLCC = strcase.ToLowerCamel(strings.ToLower(p.FieldName))
 		d.Properties[i].InternalStructType = "string"
+		d.Properties[i].InternalPbType = "string"
 		if p.Type == "string" {
 			if p.Format == "date" {
 				d.Properties[i].InternalStructType = "*commons.FcsDate"
@@ -50,17 +51,36 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 		} else if p.Type == "number" {
 			if p.Format == "int8" || p.Format == "int16" || p.Format == "int32" || p.Format == "int64" {
 				d.Properties[i].InternalStructType = p.Format
+				d.Properties[i].InternalPbType = "uint32"
+				if p.Format == "int64" {
+					d.Properties[i].InternalPbType = "uint64"
+				}
+			} else if length <= 2 {
+				d.Properties[i].InternalStructType = "int8"
+				d.Properties[i].InternalPbType = "uint32"
+			} else if length <= 4 {
+				d.Properties[i].InternalStructType = "int16"
+				d.Properties[i].InternalPbType = "uint32"
+			} else if length <= 9 {
+				d.Properties[i].InternalStructType = "int32"
+				d.Properties[i].InternalPbType = "uint32"
+			} else if length <= 18 {
+				d.Properties[i].InternalStructType = "int64"
+				d.Properties[i].InternalPbType = "uint64"
 			} else if p.Format == "float" {
 				d.Properties[i].InternalStructType = "float"
 			} else if p.Format == "double" {
 				d.Properties[i].InternalStructType = "double"
+			} else {
+				d.Properties[i].InternalStructType = "*commons.FcsTechLnr"
 			}
-			d.Properties[i].InternalStructType = "*commons.FcsTechLnr"
 		} else if p.Type == "object" {			
 			d.Properties[i].InternalStructType = "*" + strings.Join(path, "_") + "_" + p.FieldName
+			d.Properties[i].InternalPbType = strings.Join(path, "_") + "_" + p.FieldName
 			p.Item.fillMissingValuesCascade(append(path, p.FieldName))
 		} else if p.Type == "array" {
 			d.Properties[i].InternalStructType = "* []" + strings.Join(path, "_") + "_" + p.FieldName
+			d.Properties[i].InternalPbType = strings.Join(path, "_") + "_" + p.FieldName
 			p.Item.fillMissingValuesCascade(append(path, p.FieldName))
 		}
 	}
