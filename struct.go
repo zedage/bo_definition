@@ -52,7 +52,7 @@ type Properties struct {
 	InternalFieldNameLCC string     `yaml:"internalFieldNameLCC,omitempty,omitempty" json:"internalFieldNameLCC,omitempty"`
 }
 
-func (p *Properties) fillMissingValues() {
+func (p *Properties) FillMissingValues() {
 	b.InternalFieldNameUCC = strcase.ToCamel(strings.ToLower(b.FieldName))
 	b.InternalFieldNameLCC = strcase.ToLowerCamel(strings.ToLower(b.FieldName))
 }
@@ -62,7 +62,7 @@ type Getter struct {
 	Interface  []string `yaml:"interface,omitempty" json:"interface,omitempty"`
 }
 
-func (b *Message) fillMissingValues() {
+func (b *Message) FillMissingValues() {
 	b.InternalAliasUCC = strcase.ToCamel(strings.ToLower(b.Alias))
 	b.InternalAliasLCC = strcase.ToLowerCamel(strings.ToLower(b.Alias))
 }
