@@ -3,6 +3,8 @@ package bo_definition
 import (
 	"fmt"
 	"strings"
+
+	"github.com/iancoleman/strcase"
 )
 
 type SimpleError struct {
@@ -94,6 +96,9 @@ func (m *Message) validate(pfx string, fileName string) error {
 	if err != nil {
 		return err
 	}
+	m.InternalAliasUCC = strcase.ToCamel(strings.ToLower(m.Alias))
+	m.InternalAliasLCC = strcase.ToLowerCamel(strings.ToLower(m.Alias))
+
 	return nil
 }
 
@@ -166,6 +171,8 @@ func (p *Properties) validate(pfx string, fileName string) error {
 			return err
 		}
 	}
+	p.InternalFieldNameUCC = strcase.ToCamel(strings.ToLower(p.FieldName))
+	p.InternalFieldNameLCC = strcase.ToLowerCamel(strings.ToLower(p.FieldName))
 	return nil
 }
 
