@@ -39,29 +39,28 @@ type Definition struct {
 }
 
 func (d *Definition) fillMissingValuesCascade(path []string) {
-	for _, pd := range &d.Properties {
-		p := &pd
-		p.InternalFieldNameUCC = strcase.ToCamel(strings.ToLower(p.FieldName))
-		p.InternalFieldNameLCC = strcase.ToLowerCamel(strings.ToLower(p.FieldName))
-		p.InternalStructType = "string"
+	for i, p := range d.Properties {
+		d.Properties[i].InternalFieldNameUCC = strcase.ToCamel(strings.ToLower(p.FieldName))
+		d.Properties[i].InternalFieldNameLCC = strcase.ToLowerCamel(strings.ToLower(p.FieldName))
+		d.Properties[i].InternalStructType = "string"
 		if p.Type == "string" {
 			if p.Format == "date" {
-				p.InternalStructType = "*commons.FcsDate"
+				d.Properties[i].InternalStructType = "*commons.FcsDate"
 			}
 		} else if p.Type == "number" {
 			if p.Format == "int8" || p.Format == "int16" || p.Format == "int32" || p.Format == "int64" {
-				p.InternalStructType = p.Format
+				d.Properties[i].InternalStructType = p.Format
 			} else if p.Format == "float" {
-				p.InternalStructType = "float"
+				d.Properties[i].InternalStructType = "float"
 			} else if p.Format == "double" {
-				p.InternalStructType = "double"
+				d.Properties[i].InternalStructType = "double"
 			}
-			p.InternalStructType = "*commons.FcsTechLnr"
+			d.Properties[i].InternalStructType = "*commons.FcsTechLnr"
 		} else if p.Type == "object" {			
-			p.InternalStructType = "*" + strings.Join(path, "_") + "_" + p.FieldName
+			d.Properties[i].InternalStructType = "*" + strings.Join(path, "_") + "_" + p.FieldName
 			p.Item.fillMissingValuesCascade(append(path, p.FieldName))
 		} else if p.Type == "array" {
-			p.InternalStructType = "* []" + strings.Join(path, "_") + "_" + p.FieldName
+			d.Properties[i].InternalStructType = "* []" + strings.Join(path, "_") + "_" + p.FieldName
 			p.Item.fillMissingValuesCascade(append(path, p.FieldName))
 		}
 	}
