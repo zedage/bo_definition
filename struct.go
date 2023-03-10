@@ -77,11 +77,11 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 			}
 		} else if p.Type == "object" {			
 			d.Properties[i].InternalStructType = "*" + strings.Join(path, "_") + "_" + p.FieldName
-			d.Properties[i].InternalPbType = strings.Join(path, "_") + "_" + p.FieldName
+			d.Properties[i].InternalPbType = strcase.ToLowerCamel(strings.ToLower(strings.Join(path, "_"))) + "_" + p.InternalFieldNameUCC
 			p.Item.fillMissingValuesCascade(append(path, p.FieldName))
 		} else if p.Type == "array" {
 			d.Properties[i].InternalStructType = "* []" + strings.Join(path, "_") + "_" + p.FieldName
-			d.Properties[i].InternalPbType = strings.Join(path, "_") + "_" + p.FieldName
+			d.Properties[i].InternalPbType = strcase.ToLowerCamel(strings.ToLower(strings.Join(path, "_"))) + "_" + p.InternalFieldNameUCC
 			p.Item.fillMissingValuesCascade(append(path, p.FieldName))
 		}
 	}
