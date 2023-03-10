@@ -39,7 +39,8 @@ type Definition struct {
 }
 
 func (d *Definition) fillMissingValuesCascade(path []string) {
-	for _, p := range d.Properties {
+	for _, pd := range d.Properties {
+		p := &pd
 		p.InternalFieldNameUCC = strcase.ToCamel(strings.ToLower(p.FieldName))
 		p.InternalFieldNameLCC = strcase.ToLowerCamel(strings.ToLower(p.FieldName))
 		p.InternalStructType = "string"
