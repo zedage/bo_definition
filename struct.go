@@ -55,16 +55,16 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 				if p.Format == "int64" {
 					d.Properties[i].InternalPbType = "uint64"
 				}
-			} else if length <= 2 {
+			} else if p.Length <= 2 {
 				d.Properties[i].InternalStructType = "int8"
 				d.Properties[i].InternalPbType = "uint32"
-			} else if length <= 4 {
+			} else if p.Length <= 4 {
 				d.Properties[i].InternalStructType = "int16"
 				d.Properties[i].InternalPbType = "uint32"
-			} else if length <= 9 {
+			} else if p.Length <= 9 {
 				d.Properties[i].InternalStructType = "int32"
 				d.Properties[i].InternalPbType = "uint32"
-			} else if length <= 18 {
+			} else if p.Length <= 18 {
 				d.Properties[i].InternalStructType = "int64"
 				d.Properties[i].InternalPbType = "uint64"
 			} else if p.Format == "float" {
