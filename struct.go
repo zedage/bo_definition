@@ -31,16 +31,17 @@ type Definition struct {
 }
 
 type Properties struct {
-	FieldName   string     `yaml:"fieldName,omitempty" json:"fieldName,omitempty"`
-	Type        string     `yaml:"type,omitempty" json:"type,omitempty"`
-	Length      int        `yaml:"length,omitempty" json:"length,omitempty"`
-	Format      string     `yaml:"format,omitempty" json:"format,omitempty"`
-	Description string     `yaml:"description,omitempty" json:"description,omitempty"`
-	Cid         bool       `yaml:"cid,omitempty" json:"cid,omitempty"`
-	MinLength   int        `yaml:"minLength,omitempty" json:"minLength,omitempty"`
-	MaxLength   int        `yaml:"maxLength,omitempty" json:"maxLength,omitempty"`
-	Enum        []string   `yaml:"enum,omitempty" json:"enum,omitempty"`
-	Item        Definition `yaml:"item,omitempty,omitempty" json:"item,omitempty"`
+	FieldName          string     `yaml:"fieldName,omitempty" json:"fieldName,omitempty"`
+	Type               string     `yaml:"type,omitempty" json:"type,omitempty"`
+	Length             int        `yaml:"length,omitempty" json:"length,omitempty"`
+	Format             string     `yaml:"format,omitempty" json:"format,omitempty"`
+	Description        string     `yaml:"description,omitempty" json:"description,omitempty"`
+	Cid                bool       `yaml:"cid,omitempty" json:"cid,omitempty"`
+	MinLength          int        `yaml:"minLength,omitempty" json:"minLength,omitempty"`
+	MaxLength          int        `yaml:"maxLength,omitempty" json:"maxLength,omitempty"`
+	Enum               []string   `yaml:"enum,omitempty" json:"enum,omitempty"`
+	Item               Definition `yaml:"item,omitempty,omitempty" json:"item,omitempty"`
+	InternalStructType string
 }
 
 type Getter struct {
