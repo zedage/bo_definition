@@ -1,5 +1,9 @@
 package bo_definition
 
+import (
+	"github.com/iancoleman/strcase"
+)
+
 type BoRoot struct {
 	BoModel BoModel `yaml:"boModel,omitempty" json:"boModel"`
 }
@@ -48,7 +52,17 @@ type Properties struct {
 	InternalFieldNameLCC string     `yaml:"internalFieldNameLCC,omitempty,omitempty" json:"internalFieldNameLCC,omitempty"`
 }
 
+func (p *Properties) fillMissingValues() {
+	b.InternalFieldNameUCC = strcase.ToCamel(strings.ToLower(b.FieldName))
+	b.InternalFieldNameLCC = strcase.ToLowerCamel(strings.ToLower(b.FieldName))
+}
+
 type Getter struct {
 	MethodName string   `yaml:"methodName,omitempty" json:"methodName,omitempty"`
 	Interface  []string `yaml:"interface,omitempty" json:"interface,omitempty"`
+}
+
+func (b *Message) fillMissingValues() {
+	b.InternalAliasUCC = strcase.ToCamel(strings.ToLower(b.Alias))
+	b.InternalAliasLCC = strcase.ToLowerCamel(strings.ToLower(b.Alias))
 }
