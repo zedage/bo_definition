@@ -47,6 +47,7 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 		if p.Type == "string" {
 			if p.Format == "date" {
 				d.Properties[i].InternalStructType = "*commons.FcsDate"
+				d.Properties[i].InternalPbType = "google.protobuf.Timestamp"
 			}
 		} else if p.Type == "number" {
 			if p.Format == "int8" || p.Format == "int16" || p.Format == "int32" || p.Format == "int64" {
