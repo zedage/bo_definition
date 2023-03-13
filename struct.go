@@ -76,11 +76,11 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 				d.Properties[i].InternalStructType = "*commons.FcsTechLnr"
 			}
 		} else if p.Type == "object" {			
-			d.Properties[i].InternalStructType = "*" + strings.Join(path, "_") + "_" + p.FieldName
+			d.Properties[i].InternalStructType = "*" + strings.Join(path, "_") + "_" + d.Properties[i].InternalFieldNameUCC
 			d.Properties[i].InternalPbType = strings.Join(path, "_") + "_" + d.Properties[i].InternalFieldNameUCC
 			p.Item.fillMissingValuesCascade(append(path, d.Properties[i].InternalFieldNameUCC))
 		} else if p.Type == "array" {
-			d.Properties[i].InternalStructType = "* []" + strings.Join(path, "_") + "_" + p.FieldName
+			d.Properties[i].InternalStructType = "* []" + strings.Join(path, "_") + "_" + d.Properties[i].InternalFieldNameUCC
 			d.Properties[i].InternalPbType = strings.Join(path, "_") + "_" + d.Properties[i].InternalFieldNameUCC
 			p.Item.fillMissingValuesCascade(append(path, d.Properties[i].InternalFieldNameUCC))
 		}
