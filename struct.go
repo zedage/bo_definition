@@ -83,9 +83,9 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 			for _, s := range path {
 				tmpPath = append(tmpPath, strcase.ToCamel(strings.ToLower(s)))
 			}
-			d.Properties[i].InternalPbType = strings.Join(path, "_") + "_" + d.Properties[i].InternalFieldNameUCC
+			d.Properties[i].InternalPbType = strings.Join(tmpPath, "_") + "_" + d.Properties[i].InternalFieldNameUCC
 			
-			p.Item.fillMissingValuesCascade(append(tmpPath, d.Properties[i].InternalFieldNameUCC))
+			p.Item.fillMissingValuesCascade(append(tmpPath, p.FieldName))
 		} else if p.Type == "array" {
 			d.Properties[i].InternalStructType = "* []" + strings.Join(path, "_") + "_" + p.FieldName
 			
@@ -95,7 +95,7 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 			}
 			d.Properties[i].InternalPbType = strings.Join(tmpPath, "_") + "_" + d.Properties[i].InternalFieldNameUCC
 			
-			p.Item.fillMissingValuesCascade(append(path, d.Properties[i].InternalFieldNameUCC))
+			p.Item.fillMissingValuesCascade(append(path, p.FieldName))
 		}
 	}
 }
