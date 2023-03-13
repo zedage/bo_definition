@@ -77,7 +77,7 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 			}
 		} else if p.Type == "object" {
 			// strcase.ToCamel(strings.ToLower(boName))
-			d.Properties[i].InternalStructType = strings.Join(path, "_") + "_" + p.FieldName
+			d.Properties[i].InternalStructType = "*"+strings.Join(path, "_") + "_" + p.FieldName
 			
 			var tmpPath []string
 			for _, s := range path {
@@ -87,7 +87,7 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 			
 			p.Item.fillMissingValuesCascade(append(tmpPath, p.FieldName))
 		} else if p.Type == "array" {
-			d.Properties[i].InternalStructType = "[]" + strings.Join(path, "_") + "_" + p.FieldName
+			d.Properties[i].InternalStructType = "[]*" + strings.Join(path, "_") + "_" + p.FieldName
 			
 			var tmpPath []string
 			for _, s := range path {
