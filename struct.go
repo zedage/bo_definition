@@ -75,20 +75,33 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 			} else {
 				d.Properties[i].InternalStructType = "*commons.FcsTechLnr"
 			}
-		} else if p.Type == "object" {			
-			d.Properties[i].InternalStructType = "*" + strings.Join(path, "_") + "_" + d.Properties[i].InternalFieldNameUCC
+		} else if p.Type == "object" {	
+			// strcase.ToCamel(strings.ToLower(boName))
+			d.Properties[i].InternalStructType = "*" + strings.Join(path, "_") + "_" + p.FieldName
+			
+			var tmpPath []string{}
+			for _, s := range path {
+				tmpPath = append(tmpPath, strcase.ToCamel(strings.ToLower(s)))
+			}
 			d.Properties[i].InternalPbType = strings.Join(path, "_") + "_" + d.Properties[i].InternalFieldNameUCC
-			p.Item.fillMissingValuesCascade(append(path, d.Properties[i].InternalFieldNameUCC))
+			
+			p.Item.fillMissingValuesCascade(append(tmpPath, d.Properties[i].InternalFieldNameUCC))
 		} else if p.Type == "array" {
-			d.Properties[i].InternalStructType = "* []" + strings.Join(path, "_") + "_" + d.Properties[i].InternalFieldNameUCC
-			d.Properties[i].InternalPbType = strings.Join(path, "_") + "_" + d.Properties[i].InternalFieldNameUCC
+			d.Properties[i].InternalStructType = "* []" + strings.Join(path, "_") + "_" + p.FieldName
+			
+			var tmpPath []string{}
+			for _, s := range path {
+				tmpPath = append(tmpPath, strcase.ToCamel(strings.ToLower(s)))
+			}
+			d.Properties[i].InternalPbType = strings.Join(tmpPath, "_") + "_" + d.Properties[i].InternalFieldNameUCC
+			
 			p.Item.fillMissingValuesCascade(append(path, d.Properties[i].InternalFieldNameUCC))
 		}
 	}
 }
 
 func (d *Definition) FillMissingValues(boName string) {
-	d.fillMissingValuesCascade([]string{strcase.ToCamel(strings.ToLower(boName))})
+	d.fillMissingValuesCascade([]string{boName})
 }
 
 type Properties struct {
