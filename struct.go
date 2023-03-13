@@ -75,11 +75,11 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 			} else {
 				d.Properties[i].InternalStructType = "*commons.FcsTechLnr"
 			}
-		} else if p.Type == "object" {	
+		} else if p.Type == "object" {
 			// strcase.ToCamel(strings.ToLower(boName))
 			d.Properties[i].InternalStructType = "*" + strings.Join(path, "_") + "_" + p.FieldName
 			
-			var tmpPath []string{}
+			var tmpPath []string
 			for _, s := range path {
 				tmpPath = append(tmpPath, strcase.ToCamel(strings.ToLower(s)))
 			}
@@ -89,7 +89,7 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 		} else if p.Type == "array" {
 			d.Properties[i].InternalStructType = "* []" + strings.Join(path, "_") + "_" + p.FieldName
 			
-			var tmpPath []string{}
+			var tmpPath []string
 			for _, s := range path {
 				tmpPath = append(tmpPath, strcase.ToCamel(strings.ToLower(s)))
 			}
