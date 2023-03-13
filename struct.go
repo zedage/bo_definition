@@ -77,18 +77,18 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 			}
 		} else if p.Type == "object" {			
 			d.Properties[i].InternalStructType = "*" + strings.Join(path, "_") + "_" + p.FieldName
-			d.Properties[i].InternalPbType = strcase.ToCamel(strings.ToLower(strings.Join(path, "_"))) + "_" + d.Properties[i].InternalFieldNameUCC
-			p.Item.fillMissingValuesCascade(append(path, p.FieldName))
+			d.Properties[i].InternalPbType = strings.Join(path, "_") + "_" + d.Properties[i].InternalFieldNameUCC
+			p.Item.fillMissingValuesCascade(append(path, d.Properties[i].InternalFieldNameUCC))
 		} else if p.Type == "array" {
 			d.Properties[i].InternalStructType = "* []" + strings.Join(path, "_") + "_" + p.FieldName
-			d.Properties[i].InternalPbType = strcase.ToCamel(strings.ToLower(strings.Join(path, "_"))) + "_" + d.Properties[i].InternalFieldNameUCC
-			p.Item.fillMissingValuesCascade(append(path, p.FieldName))
+			d.Properties[i].InternalPbType = strings.Join(path, "_") + "_" + d.Properties[i].InternalFieldNameUCC
+			p.Item.fillMissingValuesCascade(append(path, d.Properties[i].InternalFieldNameUCC))
 		}
 	}
 }
 
 func (d *Definition) FillMissingValues(boName string) {
-	d.fillMissingValuesCascade([]string{boName})
+	d.fillMissingValuesCascade([]string{strcase.ToCamel(strings.ToLower(boName))})
 }
 
 type Properties struct {
