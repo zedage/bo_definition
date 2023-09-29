@@ -68,13 +68,13 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 			} else if p.Length <= 18 {
 				d.Properties[i].InternalStructType = "int64"
 				d.Properties[i].InternalPbType = "uint64"
-			} else if p.Format == "float" {
-				d.Properties[i].InternalStructType = "float"
-			} else if p.Format == "double" {
-				d.Properties[i].InternalStructType = "double"
 			} else {
 				d.Properties[i].InternalStructType = "*commons.FcsTechLnr"
 			}
+		} else if p.Format == "float" {
+			d.Properties[i].InternalStructType = "float"
+		} else if p.Format == "double" {
+			d.Properties[i].InternalStructType = "double"
 		} else if p.Type == "object" {
 			// strcase.ToCamel(strings.ToLower(boName))
 			d.Properties[i].InternalStructType = "*"+strings.Join(path, "_") + "_" + p.FieldName
