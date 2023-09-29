@@ -72,9 +72,11 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 				d.Properties[i].InternalStructType = "*commons.FcsTechLnr"
 			}
 		} else if p.Type == "float" {
-			d.Properties[i].InternalStructType = "float"
+			d.Properties[i].InternalStructType = "float32"
+			d.Properties[i].InternalPbType = "float"
 		} else if p.Type == "double" {
 			d.Properties[i].InternalStructType = "double"
+			d.Properties[i].InternalPbType = "double"
 		} else if p.Type == "object" {
 			// strcase.ToCamel(strings.ToLower(boName))
 			d.Properties[i].InternalStructType = "*"+strings.Join(path, "_") + "_" + p.FieldName
