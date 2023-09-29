@@ -71,9 +71,9 @@ func (d *Definition) fillMissingValuesCascade(path []string) {
 			} else {
 				d.Properties[i].InternalStructType = "*commons.FcsTechLnr"
 			}
-		} else if p.Format == "float" {
+		} else if p.Type == "float" {
 			d.Properties[i].InternalStructType = "float"
-		} else if p.Format == "double" {
+		} else if p.Type == "double" {
 			d.Properties[i].InternalStructType = "double"
 		} else if p.Type == "object" {
 			// strcase.ToCamel(strings.ToLower(boName))
