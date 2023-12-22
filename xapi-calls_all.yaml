@@ -1,0 +1,262 @@
+keys:
+  - name: kdLnrList
+    c2Values: KD_STAMM
+    c2DataType: SRCI_I22_1
+  - name: ktLnrList
+    c2Values: KT_STAMM
+    c2DataType: SRCI_I22_1
+  - name: ktGrpLnrList
+    c2Values: KT_GRP
+    c2DataType: SRCI_I22_1
+  - name: kdPendLnrList
+    c2Values: KD_PEND
+    c2DataType: SRCI_I22_1
+  - name: kdKdLnrList
+    c2Values: KD_KD
+    c2DataType: SRCI_I22_1
+  - name: aufLnrList
+    c2Values: B2_AUF
+    c2DataType: SRCI_I22_1
+  - name: b2AbrLnrList
+    c2Values: B2_ABR
+    c2DataType: SRCI_I22_1
+  - name: b2AbrKursLnrList
+    c2Values: B2_ABR_KURS
+    c2DataType: SRCI_I22_1
+  - name: tlLnrList
+    c2Values: TL_STAMM
+    c2DataType: SRCI_I22_1
+xapis:
+  - package: KTQI_KONTO
+    function: F_ReadKontoDetails_1
+    out: KTCI_KONTO_DETAIL_1
+    apiType:
+      callType: multi
+    interface:
+      - name: P_KtLnrTab
+        dataType: number
+        source: ktLnrList
+        field: KT_LNR
+    bo:
+      name: account_detail
+      key:
+        - KT_LNR
+  - package: KDQI_CUSTOMER
+    function: F_ReadCustomersBasic_1
+    out: KDCI_CUSTOMER_BASIC_2
+    apiType:
+      callType: multi
+    interface:
+      - name: P_KdLnrs
+        dataType: number
+        source: kdLnrList
+        field: KD_LNR
+    bo:
+      name: customer_basic
+      key:
+        - KD_LNR
+  - package: KDQI_CUSTOMER
+    function: F_ReadKdSuchbegriffe_1
+    out: KDCI_KD_SUCHBEGRIFFE_1
+    apiType:
+      callType: multi
+    interface:
+      - name: P_KdLnrTab
+        dataType: number
+        source: kdLnrList
+        field: KD_LNR
+    bo:
+      name: customer_search_terms
+      key:
+        - KD_LNR
+  - package: KTQI_KONTO
+    function: F_GetQRIBAN
+    ignoreError: true
+    out: varchar2(80)
+    apiType:
+      callType: single
+      loopParameter: P_KtLnr
+    interface:
+      - name: P_KtLnr
+        dataType: number
+        source: ktLnrList
+        field: KT_LNR
+    bo:
+      name: account_qriban
+      key:
+        - KT_LNR
+  - package: KDQI_CUSTOMER
+    function: F_GetKdBeraterLnr_1
+    ignoreError: true
+    out: number
+    apiType:
+      callType: single
+      loopParameter: P_KdLnr
+    interface:
+      - name: P_KdLnr
+        dataType: number
+        source: kdLnrList
+        field: KD_LNR
+      - name: P_FilterBereich
+        dataType: varchar2(2)
+        value: null
+    bo:
+      name: customer_advisor
+      key:
+        - KD_LNR
+  - package: KDQI_KUNDE
+    function: F_GetStatusPeriodPruefung_1
+    ignoreError: true
+    out: number
+    apiType:
+      callType: single
+      loopParameter: P_KdLnr
+    interface:
+      - name: P_KdLnr
+        dataType: number
+        source: kdLnrList
+        field: KD_LNR
+    bo:
+      name: status_period_check
+      key:
+        - KD_LNR
+  - package: KDQI_ADDRESS
+    function: F_ReadAddresses_2
+    out: KDCI_ADDRESS_2
+    apiType:
+      callType: single
+      loopParameter: P_KdLnr
+    interface:
+      - name: P_KdLnr
+        dataType: number
+        source: kdLnrList
+        field: KD_LNR
+      - name: P_AdrTypCd
+        dataType: number
+        value: null
+      - name: P_ValidAtDate
+        dataType: date
+        value: null
+    bo:
+      name: address
+      key:
+        - KD_LNR
+        - ADR_TYP_CD
+        - VON_DAT
+  - package: KDQI_PENDENZ
+    function: F_ReadPendenzenLnr_2
+    out: KDCI_PENDENZ_2
+    apiType:
+      callType: multi
+    interface:
+      - name: P_PendLnrs
+        dataType: number
+        source: kdPendLnrList
+        field: KD_PEND_LNR
+    bo:
+      name: tasks
+      key:
+        - KD_PEND_LNR
+views:
+  - name: KDWI_STAMM_NODS_1
+    interface:
+      name: KD_LNR
+      dataType: number
+      source: kdLnrList
+      field: KD_LNR
+    bo:
+      name: customer_base_view_1
+      key:
+        - KD_LNR
+  - name: KDWI_FIRMEN_SONSTIGE_NODS_1
+    interface:
+      name: KD_LNR
+      dataType: number
+      source: kdLnrList
+      field: KD_LNR
+    bo:
+      name: companies_and_others_view_1
+      key:
+        - KD_LNR
+  - name: KDWI_MEHRERE_PRIV_PERS_NODS_1
+    interface:
+      name: KD_LNR
+      dataType: number
+      source: kdLnrList
+      field: KD_LNR
+    bo:
+      name: several_persons_view_1
+      key:
+        - KD_LNR
+  - name: KDWI_PRIV_EINZELPERS_NODS_1
+    interface:
+      name: KD_LNR
+      dataType: number
+      source: kdLnrList
+      field: KD_LNR
+    bo:
+      name: private_person_view_1
+      key:
+        - KD_LNR
+  - name: KDWI_BEZIEHUNG_1
+    interface:
+      name: KD_KD_LNR
+      dataType: number
+      source: kdKdLnrList
+      field: KD_KD_LNR
+    bo:
+      name: customer_relationship_view_1
+      key:
+        - KD_KD_LNR
+  - name: B2WAUF
+    interface:
+      name: AUF_LNR
+      dataType: number
+      source: aufLnrList
+      field: AUF_LNR
+    bo:
+      name: stock_order_view
+      key:
+        - AUF_LNR
+  - name: B2WABR
+    interface:
+      name: B2_ABR_LNR
+      dataType: number
+      source: b2AbrLnrList
+      field: B2_ABR_LNR
+    bo:
+      name: stock_settlement_view
+      key:
+        - B2_ABR_LNR
+  - name: B2WABR_KURS
+    interface:
+      name: B2_ABR_KURS_LNR
+      dataType: number
+      source: b2AbrKursLnrList
+      field: B2_ABR_KURS_LNR
+    bo:
+      name: stock_settlement_exchange_rate_view
+      key:
+        - B2_ABR_KURS_LNR
+  - name: TLWSTAMM
+    interface:
+      name: TL_LNR
+      dataType: number
+      source: tlLnrList
+      field: TL_LNR
+    bo:
+      name: securities_delivery_view
+      key:
+        - TL_LNR
+  - name: GAWI_BUCH_CARD_1
+    interface:
+      name: KT_LNR
+      dataType: number
+      source: ktLnrList
+      field: KT_LNR
+    bo:
+      name: cash_dispenser_transaction_card_view_1
+      key:
+        - KT_LNR
+        - CARD_LNR
+        - TRAK_DT
